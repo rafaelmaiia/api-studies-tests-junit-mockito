@@ -4,6 +4,7 @@ import com.rafaelmaia.api_studies_tests_junit_mockito.domain.User;
 import com.rafaelmaia.api_studies_tests_junit_mockito.domain.dto.UserDTO;
 import com.rafaelmaia.api_studies_tests_junit_mockito.repositories.UserRepository;
 import com.rafaelmaia.api_studies_tests_junit_mockito.services.UserService;
+import com.rafaelmaia.api_studies_tests_junit_mockito.services.exceptions.DataIntegratyViolationException;
 import com.rafaelmaia.api_studies_tests_junit_mockito.services.exceptions.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User create(UserDTO obj) {
+        findByEmail(obj);
         return repository.save(mapper.map(obj, User.class));
+    }
+
+    private void findByEmail(UserDTO obj) {
+        Optional<User> user = repository.findByEmail(obj.getEmail());
+
+        if (user.isPresent()) {
+            throw new DataIntegratyViolationException("Email already registered in the system");
+        }
     }
 }
