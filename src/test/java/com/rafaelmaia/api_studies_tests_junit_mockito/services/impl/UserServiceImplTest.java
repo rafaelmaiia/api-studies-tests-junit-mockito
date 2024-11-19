@@ -25,12 +25,14 @@ import static org.mockito.Mockito.*;
 class UserServiceImplTest {
 
     public static final Integer ID      = 1;
+    public static final Integer INDEX   = 0;
     public static final String NAME     = "Rafael";
     public static final String EMAIL    = "rafael@mail.com";
     public static final String PASSWORD = "123";
+
     public static final String USER_NOT_FOUND = "User not found!";
-    public static final int INDEX = 0;
     public static final String EMAIL_ALREADY_REGISTERED_IN_THE_SYSTEM = "Email already registered in the system";
+
     @InjectMocks
     private UserServiceImpl service;
 
