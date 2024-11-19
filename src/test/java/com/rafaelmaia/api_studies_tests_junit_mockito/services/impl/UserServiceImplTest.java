@@ -3,6 +3,7 @@ package com.rafaelmaia.api_studies_tests_junit_mockito.services.impl;
 import com.rafaelmaia.api_studies_tests_junit_mockito.domain.User;
 import com.rafaelmaia.api_studies_tests_junit_mockito.domain.dto.UserDTO;
 import com.rafaelmaia.api_studies_tests_junit_mockito.repositories.UserRepository;
+import com.rafaelmaia.api_studies_tests_junit_mockito.services.exceptions.DataIntegratyViolationException;
 import com.rafaelmaia.api_studies_tests_junit_mockito.services.exceptions.ObjectNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -101,6 +102,19 @@ class UserServiceImplTest {
         assertEquals(NAME, response.getName());
         assertEquals(EMAIL, response.getEmail());
         assertEquals(PASSWORD, response.getPassword());
+    }
+
+    @Test
+    void whenCreateThenReturnDataIntegrityViolationException() {
+        when(repository.findByEmail(anyString())).thenReturn(optionalUser);
+
+        try {
+            optionalUser.get().setId(2);
+            service.create(userDTO);
+        } catch (Exception ex) {
+            assertEquals(DataIntegratyViolationException.class, ex.getClass());
+            assertEquals("Email already registered in the system", ex.getMessage());
+        }
     }
 
     @Test
