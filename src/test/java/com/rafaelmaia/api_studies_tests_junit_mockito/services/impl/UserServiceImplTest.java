@@ -3,6 +3,7 @@ package com.rafaelmaia.api_studies_tests_junit_mockito.services.impl;
 import com.rafaelmaia.api_studies_tests_junit_mockito.domain.User;
 import com.rafaelmaia.api_studies_tests_junit_mockito.domain.dto.UserDTO;
 import com.rafaelmaia.api_studies_tests_junit_mockito.repositories.UserRepository;
+import com.rafaelmaia.api_studies_tests_junit_mockito.services.exceptions.ObjectNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -55,6 +56,18 @@ class UserServiceImplTest {
         assertEquals(ID, response.getId());
         assertEquals(NAME, response.getName());
         assertEquals(EMAIL, response.getEmail());
+    }
+
+    @Test
+    void whenFindByIdThenReturnAnObjectNotFoundException() {
+        when(repository.findById(anyInt())).thenThrow(new ObjectNotFoundException("User not found!"));
+
+        try {
+            service.findById(ID);
+        } catch (Exception ex) {
+            assertEquals(ObjectNotFoundException.class, ex.getClass());
+            assertEquals("User not found!", ex.getMessage());
+        }
     }
 
     @Test
