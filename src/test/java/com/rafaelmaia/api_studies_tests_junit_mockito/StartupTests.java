@@ -4,10 +4,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ApiStudiesTestsJunitMockitoApplicationTests {
+class StartupTests {
 
 	@Test
-	void contextLoads() {
+	void main() {
+		Startup.main(new String[] {});
 	}
 
 }
